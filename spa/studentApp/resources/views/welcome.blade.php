@@ -3,6 +3,7 @@
 <html>
     <head>
         <title>SPA app</title>
+        @vite('resources/css/app.css')
     </head>
 
     <body>
