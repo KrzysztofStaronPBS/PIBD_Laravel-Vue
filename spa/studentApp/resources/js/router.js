@@ -32,4 +32,5 @@ const router = createRouter({
     routes,
     linkActiveClass: 'underline decoration-sky-500 decoration-2 underline-offset-8 text-sky-600'
 })
+
 export default router
