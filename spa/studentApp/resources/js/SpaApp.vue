@@ -13,28 +13,35 @@
             </template>
         </div>
         <router-view />
+
+        <Popup ref="popupRef" />
     </div>
 </template>
 
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { ref, onMounted, watch } from 'vue'
+import {ref, onMounted, watch, provide} from 'vue'
+import Popup from './components/Popup.vue';
 
 const router = useRouter()
 const route = useRoute()
 const isLogged = ref(false)
+const popupRef = ref(null);
+
+provide('popupService', (info, btns, title) => {
+    if (popupRef.value) {
+        return popupRef.value.open(info, btns, title);
+    }
+    return Promise.resolve('close');
+});
 
 const checkLoginStatus = () => {
     isLogged.value = localStorage.getItem('isLogged') === 'true';
 };
 
-onMounted(() => {
-    checkLoginStatus();
-});
+onMounted(() => { checkLoginStatus(); });
 
-watch(() => route.path, () => {
-    checkLoginStatus();
-});
+watch(() => route.path, () => { checkLoginStatus(); });
 
 // logika wylogowania
 const logout = async () => {
@@ -46,9 +53,7 @@ const logout = async () => {
     localStorage.setItem("isLogged", "false")
     isLogged.value = false
     if (route.name !== 'home') {
-        router.push({
-            name: 'home',
-        })
+        router.push({ name: 'home', })
     }
 }
 </script>
