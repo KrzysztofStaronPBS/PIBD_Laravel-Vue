@@ -5,7 +5,7 @@
             <router-link :to="{ name: 'home' }">Home</router-link>
             <template v-if="isLogged">
                 <router-link :to="{ name: 'dashboard' }">Dashboard</router-link>
-                <a @click.prevent="logout" href>Logout</a>
+                <a @click.prevent="handleLogout" class="cursor-pointer" href="#">Logout</a>
             </template>
             <template v-else>
                 <router-link to="/register">Register</router-link>
@@ -20,13 +20,15 @@
 
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import {ref, onMounted, watch, provide} from 'vue'
+import { ref, onMounted, provide } from 'vue'
 import Popup from './components/Popup.vue';
+import { useAuth } from './composables/features/auth.js'
 
 const router = useRouter()
 const route = useRoute()
-const isLogged = ref(false)
 const popupRef = ref(null);
+
+const { isLogged, logout, setUserState } = useAuth()
 
 provide('popupService', (info, btns, title) => {
     if (popupRef.value) {
@@ -35,25 +37,26 @@ provide('popupService', (info, btns, title) => {
     return Promise.resolve('close');
 });
 
-const checkLoginStatus = () => {
-    isLogged.value = localStorage.getItem('isLogged') === 'true';
-};
+onMounted(() => {
+    axios.interceptors.response.use(
+        response => response,
+        error => {
+            if (error?.response?.status === 401) {
+                setUserState(false);
+                if (route.name !== 'login') {
+                    router.push({ name: 'login' });
+                }
+            }
+            return Promise.reject(error);
+        }
+    );
+});
 
-onMounted(() => { checkLoginStatus(); });
+const handleLogout = async () => {
+    await logout();
 
-watch(() => route.path, () => { checkLoginStatus(); });
-
-// logika wylogowania
-const logout = async () => {
-    try {
-        const response = await axios.post('/api/logout')
-    } catch (e) {
-        console.log('an error')
-    }
-    localStorage.setItem("isLogged", "false")
-    isLogged.value = false
     if (route.name !== 'home') {
-        router.push({ name: 'home', })
+        await router.push({ name: 'home' });
     }
 }
 </script>

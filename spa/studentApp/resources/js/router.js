@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuth } from './composables/features/auth.js'
 
 const routes = [
     {
@@ -39,14 +40,14 @@ const router = createRouter({
 // strażnik nawigacji
 router.beforeEach((to, from, next) => {
     // sprawdzenie stanu bezpośrednio z localStorage
-    const isLogged = localStorage.getItem('isLogged') === 'true';
+    const { isLogged } = useAuth();
 
-    if (to.meta.requiresAuth && !isLogged) {
+    if (to.meta.requiresAuth && !isLogged.value) {
         // jeśli chronione, a użytkownik jest niezalogowany -> login
-        next('/login');
-    } else if (to.meta.requiresGuest && isLogged) {
+        next({ name: 'login' });
+    } else if (to.meta.requiresGuest && isLogged.value) {
         // jeśli tylko dla gości, a użytkownik jest zalogowany -> dashboard
-        next('/dashboard');
+        next({ name: 'dashboard' });
     } else {
         next();
     }

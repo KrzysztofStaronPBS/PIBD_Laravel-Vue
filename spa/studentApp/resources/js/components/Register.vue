@@ -14,26 +14,22 @@
 
 <script setup>
 import FormInput from '../components/FormInput.vue';
-import { ref } from 'vue';
+import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuth } from '../composables/features/auth.js';
 
 const router = useRouter();
-const errors = ref(null)
-const form = {
-    name: null,
-    email: null,
-    password: null,
-    password_confirmation: null,
-}
+const { register } = useAuth();
+
+const form = reactive({
+    name: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
+});
+
 const submit = async () => {
-errors.value=null
-    try {
-        const response = await axios.post('/api/register', form);
-        await router.push('/login');
-    } catch (e) {
-        if (e.response.status == 422) {
-            errors.value = e.response.data.errors;
-        } else { console.log('an error') }
-    }
-}
+    const success = await register(form);
+    if (success) await router.push({ name: 'login' });
+};
 </script>
