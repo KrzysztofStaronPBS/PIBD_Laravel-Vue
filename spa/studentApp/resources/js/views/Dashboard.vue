@@ -1,29 +1,14 @@
 <template>
-    <div>
-        Dashboard
-        <div v-if="isLoading">Loading...</div>
-        <div v-else-if="error">An error occurred 🙁 👉 {{ error }}</div>
-        <div v-else>Witaj {{ user?.name }}!</div>
-        <div v-if="user">Witaj inaczej, Bonjour {{ user?.name }}!</div>
+    <div class="p-6 max-w-7xl mx-auto">
+        <div v-if="user" class="text-2xl font-semibold text-gray-700 mb-6 border-b pb-4">
+            Ahoj {{ user.name }}!
+        </div>
+
+        <router-view />
     </div>
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
-import { useAuth } from '../composables/features/auth.js';
-import { useRequest } from '../composables/core/request.js';
-
+import { useAuth } from "../composables/features/auth.js";
 const { user } = useAuth();
-
-const { error, isLoading, get } = useRequest();
-
-onMounted(async () => {
-    try {
-        await get('/api/user');
-        // testowanie błędu sieciowego (ERR_CONNECTION_REFUSED) bezpośrednio w Vue
-        // await get('http://localhost:9999/api/force-error');
-    } catch (e) {
-        console.log('an error')
-    }
-})
 </script>

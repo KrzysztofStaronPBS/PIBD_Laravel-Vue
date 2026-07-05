@@ -8,10 +8,29 @@ const routes = [
         component: () => import("@/views/Home.vue"),
     },
     {
-        name: "dashboard",
         path: "/dashboard",
         meta: { requiresAuth: true },
-        component: () => import("@/views/Dashboard.vue")
+        component: () => import("@/views/Dashboard.vue"),
+        children: [
+            {
+                // główny widok dashboardu to lista studentów
+                name: "dashboard",
+                path: "",
+                component: () => import("@/views/students/Index.vue")
+            },
+            {
+                name: "students.create",
+                path: "create",
+                component: () => import("@/views/students/Form.vue")
+            },
+            {
+                name: "students.edit",
+                path: "edit/:id",
+                component: () => import("@/views/students/Form.vue"),
+                props: true
+                // przekazuje :id bezpośrednio jako prop do formularza
+            }
+        ]
     },
     {
         name: "register",
