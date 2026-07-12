@@ -85,7 +85,14 @@
                             {{ student.paid ? "💰" : "🫰" }}
                         </span>
                 </td>
-                <td class="border border-gray-200 p-3 text-center space-x-2">
+                <td class="border border-gray-200 p-3 text-center space-x-2 whitespace-nowrap">
+                    <router-link
+                        :to="{ name: 'students.tasks', params: { id: student.id } }"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded text-xs font-semibold transition-colors"
+                    >
+                        ⚙️ Manage Tasks
+                    </router-link>
+
                     <router-link
                         :to="{ name: 'students.edit', params: { id: student.id } }"
                         class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1 rounded text-xs font-semibold"
@@ -183,7 +190,7 @@ const getSortIcon = (key) => {
 
 // wyświetlenie opisu w popupie
 const showDescription = async (student) => {
-    const formattedMessage = `${student.first_name} ${student.last_name}: ${student.description}`
+    const formattedMessage = `Student: ${student.first_name} ${student.last_name} \n\n${student.description}`
 
     if (popupService) {
         await popupService(
@@ -198,7 +205,7 @@ const showDescription = async (student) => {
 
 const deleteStudent = async (student) => {
     let confirmed = false
-    const message = `Are you sure you want to delete student ${student.first_name} ${student.last_name}?`
+    const message = `Are you sure you want to delete student\n${student.first_name} ${student.last_name}?`
 
     if (popupService) {
         const choice = await popupService(

@@ -29,6 +29,30 @@ const routes = [
                 component: () => import("@/views/students/Form.vue"),
                 props: true
                 // przekazuje :id bezpośrednio jako prop do formularza
+            },
+            {
+                // zarządzanie zadaniami konkretnego studenta (/dashboard/students/:id/tasks)
+                name: "students.tasks",
+                path: "students/:id/tasks",
+                component: () => import("@/views/students/StudentManageTasks.vue"),
+                props: true
+            },
+            {
+                // globalna lista zadań (/dashboard/tasks)
+                name: "tasks.index",
+                path: "tasks",
+                component: () => import("@/views/tasks/Index.vue")
+            },
+            {
+                name: "tasks.create",
+                path: "tasks/create",
+                component: () => import("@/views/tasks/Form.vue")
+            },
+            {
+                name: "tasks.edit",
+                path: "tasks/edit/:id",
+                component: () => import("@/views/tasks/Form.vue"),
+                props: true
             }
         ]
     },

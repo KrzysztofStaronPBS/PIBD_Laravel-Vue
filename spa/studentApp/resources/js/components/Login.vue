@@ -1,16 +1,20 @@
 <template>
-    <div>
-        <form @submit.prevent="submit">
+    <div class="mt-12 max-w-md mx-auto bg-white p-6 rounded shadow-sm border border-gray-200">
+        <h2 class="text-xl font-bold text-gray-800 text-center mb-6">Sign In to Your Account</h2>
+
+        <form @submit.prevent="submit" class="space-y-4">
             <FormInput name="email" type="email" v-model="form.email" :errMsg="error" />
             <FormInput name="password" type="password" v-model="form.password" />
 
-            <button
-                :disabled="isLoading"
-                type="submit"
-                class="hover:border-2 disabled:text-gray-400 disabled:bg-gray-50 disabled:cursor-not-allowed cursor-pointer border p-2 m-2 rounded transition-all duration-200"
-            >
-                {{ isLoading ? `Logging in${dots}` : 'Login' }}
-            </button>
+            <div class="pt-2">
+                <button
+                    :disabled="isLoading"
+                    type="submit"
+                    class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed cursor-pointer text-sm"
+                >
+                    {{ isLoading ? `Logging in${dots}` : 'Login' }}
+                </button>
+            </div>
         </form>
     </div>
 </template>

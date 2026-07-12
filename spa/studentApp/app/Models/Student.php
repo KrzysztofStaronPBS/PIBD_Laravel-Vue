@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Student extends Model
 {
@@ -14,5 +15,12 @@ class Student extends Model
             'paid'=>'boolean',
             'age'=>'integer'
         ];
+    }
+
+    public function tasks(): BelongsToMany
+    {
+        return $this->belongsToMany(Task::class)
+            ->withPivot(['status', 'due_date'])
+            ->withTimestamps();
     }
 }

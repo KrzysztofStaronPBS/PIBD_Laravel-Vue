@@ -8,7 +8,8 @@
             </div>
 
             <div class="w-full font-bold text-lg text-gray-900 mb-3">{{ title }}</div>
-            <div class="text-gray-600 text-sm mb-5 px-2">{{ info }}</div>
+
+            <div class="text-gray-600 text-sm mb-5 px-2 whitespace-pre-line">{{ info }}</div>
 
             <div class="flex flex-row justify-center items-center flex-wrap">
                 <template v-for="(value, name) in btns" :key="name">
@@ -54,20 +55,20 @@ defineExpose({ open });
 </script>
 
 <style scoped>
-    .modal {
-        position: fixed;
-        inset: 0;
-        z-index: 50;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: rgba(0, 0, 0, 0.4);
-    }
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.4);
+}
 
-    .modal-content {
-        background-color: white;
-        padding: 1.5rem;
-        border-radius: 0.75rem;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    }
+.modal-content {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
 </style>
